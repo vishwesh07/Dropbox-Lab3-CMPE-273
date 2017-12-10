@@ -1,0 +1,5 @@
+com\controller\UserController.class
+com\repository\UserRepository.class
+com\SpringBootDemo.class
+com\entity\User.class
+com\service\UserService.class
