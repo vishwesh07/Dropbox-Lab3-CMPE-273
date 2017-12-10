@@ -13,12 +13,15 @@ class SignUp extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            userData: {
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-            },
+            firstName: '',
+            lastName: '',
+            email: '',
+            password: '',
+            overview: '',
+            work: '',
+            education:'',
+            contactInfo:'',
+            lifeEvents:''
         };
     }
 
@@ -71,12 +74,11 @@ class SignUp extends Component{
                                 className="span3"
                                 placeholder="Enter First Name"
                                 autoFocus="autoFocus"
+                                value={this.state.firstName}
                                 onChange={ (event) => {
                                     this.setState({
-                                        userData: {
-                                            ...this.state.userData,
+                                            ...this.state,
                                             firstName: event.target.value
-                                        }
                                     });
                                 }}
                             />
@@ -91,13 +93,11 @@ class SignUp extends Component{
                                 className="span3"
                                 placeholder="Enter Last Name"
                                 required="required"
-                                value={this.state.userData.lastName}
+                                value={this.state.lastName}
                                 onChange={ (event) => {
                                     this.setState({
-                                        userData: {
-                                            ...this.state.userData,
+                                            ...this.state,
                                             lastName: event.target.value
-                                        }
                                     });
                                 }}
                             />
@@ -112,13 +112,11 @@ class SignUp extends Component{
                                 className="span3"
                                 placeholder="Enter Email Address"
                                 required="required"
-                                value={this.state.userData.email}
+                                value={this.state.email}
                                 onChange={ (event) => {
                                     this.setState({
-                                        userData: {
-                                            ...this.state.userData,
+                                            ...this.state,
                                             email: event.target.value
-                                        }
                                     });
                                 }}
                             />
@@ -133,17 +131,111 @@ class SignUp extends Component{
                                 className="span3"
                                 placeholder="Enter Password"
                                 required="required"
-                                value={this.state.userData.password}
+                                value={this.state.password}
                                 onChange={ (event) => {
                                     this.setState({
-                                        userData: {
-                                            ...this.state.userData,
+                                            ...this.state,
                                             password: event.target.value
-                                        }
                                     });
                                 }}
                             />
                         </div>
+
+                        <div className="form-group">
+                            <label>Work</label>
+                            &nbsp; &nbsp; &nbsp;
+                            <input
+                                type="name"
+                                name="work"
+                                className="span3"
+                                placeholder="Enter Work Info"
+                                autoFocus="autoFocus"
+                                value={this.state.work}
+                                onChange={ (event) => {
+                                    this.setState({
+                                            ...this.state,
+                                            work: event.target.value
+                                    });
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Overview</label>
+                            &nbsp; &nbsp; &nbsp;
+                            <input
+                                type="name"
+                                name="overview"
+                                className="span3"
+                                placeholder="Enter Overview"
+                                autoFocus="autoFocus"
+                                value={this.state.overview}
+                                onChange={ (event) => {
+                                    this.setState({
+                                            ...this.state,
+                                            overview: event.target.value
+                                    });
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Education</label>
+                            &nbsp; &nbsp; &nbsp;
+                            <input
+                                type="name"
+                                name="education"
+                                className="span3"
+                                placeholder="Enter Education"
+                                autoFocus="autoFocus"
+                                value={this.state.education}
+                                onChange={ (event) => {
+                                    this.setState({
+                                            ...this.state,
+                                            education: event.target.value
+                                    });
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Contact Info</label>
+                            &nbsp; &nbsp; &nbsp;
+                            <input
+                                type="name"
+                                name="contactInfo"
+                                className="span3"
+                                placeholder="Enter Contact Info"
+                                autoFocus="autoFocus"
+                                value={this.state.contactInfo}
+                                onChange={ (event) => {
+                                    this.setState({
+                                            ...this.state,
+                                        contactInfo: event.target.value
+                                    });
+                                }}
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Life Events</label>
+                            &nbsp; &nbsp; &nbsp;
+                            <input
+                                type="name"
+                                name="lifeEvents"
+                                className="span3"
+                                placeholder="Enter Life Events"
+                                autoFocus="autoFocus"
+                                value={this.state.lifeEvents}
+                                onChange={ (event) => {
+                                    this.setState({
+                                            ...this.state,
+                                        lifeEvents: event.target.value
+                                    });
+                                }}
+                            />
+                        </div>
+
 
                         <div className="form-group">
                             <input
