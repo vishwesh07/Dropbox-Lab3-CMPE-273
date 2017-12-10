@@ -1,9 +1,9 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
 
 export const doSignOut = (payload) =>
 
-    fetch(`${api}/SignOut`, {
+    fetch(`${api}/user/signOut`, {
         credentials: 'include',
     }).then( res => {
         return res.json();
