@@ -1,12 +1,12 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
 
 const headers = {
     'Accept': 'application/json'
 };
 
 export const createFolder = (payload) =>
-    fetch(`${api}/folderActions/createFolder`, {
+    fetch(`${api}/user/folderAction/createFolder`, {
         method: 'POST',
         headers: {
             ...headers,

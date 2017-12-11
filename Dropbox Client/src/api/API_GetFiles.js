@@ -1,12 +1,12 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004';
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
 
 const headers = {
     'Accept': 'application/json'
 };
 
 export const getDocs = (payload) =>
-    fetch(`${api}/getDocs`,{
+    fetch(`${api}/user/getDocs`,{
         method: 'POST',
         headers: {
             ...headers,

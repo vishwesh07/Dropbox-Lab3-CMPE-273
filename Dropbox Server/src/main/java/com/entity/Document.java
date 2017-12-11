@@ -13,9 +13,41 @@ public class Document {
 
     private String name;
 
+    private String type;
+
     private String owner;
 
     private String path;
+
+    private Boolean star = false;
+
+    public Document(){
+
+    }
+
+    public Document(String name,String type,String owner,String path,Boolean star){
+        this.name = name;
+        this.type = type;
+        this.owner = owner;
+        this.path = path;
+        this.star = star;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Boolean getStar() {
+        return star;
+    }
+
+    public void setStar(Boolean star) {
+        this.star = star;
+    }
 
     public Integer getId() {
         return id;

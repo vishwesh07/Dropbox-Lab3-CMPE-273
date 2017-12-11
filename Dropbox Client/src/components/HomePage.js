@@ -38,18 +38,18 @@ class HomePage extends Component{
 
         console.log("In IsSignedIn request of willMount");
 
-        API_IsSignedIn.checkIsSignedIn()
-            .then((status) => {
-
-                    if(status === 200){
-                        console.log("User is authorized to access this page");
-                    }
-                    else{
-                        this.props.history.push("/SignIn");
-                    }
-
-                }
-            );
+        // API_IsSignedIn.checkIsSignedIn()
+        //     .then((status) => {
+        //
+        //             if(status === 200){
+        //                 console.log("User is authorized to access this page");
+        //             }
+        //             else{
+        //                 this.props.history.push("/SignIn");
+        //             }
+        //
+        //         }
+        //     );
     }
 
     componentDidMount() {
@@ -62,7 +62,7 @@ class HomePage extends Component{
                 console.log(data);
                 this.setState({
                         ...this.state,
-                        user_docs: data.docArr
+                        user_docs: data
                 });
             });
     };
@@ -78,12 +78,13 @@ class HomePage extends Component{
         API_UploadFile.uploadFile(payload)
             .then((status) => {
 
-                if (status === 204) {
+                if (status === 200) {
+                    console.log("!!File uploaded!!");
                     API_GetFiles.getDocs(this.st)
                         .then((data) => {
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr,
+                                user_docs: data,
                             });
                         });
                 }
@@ -112,7 +113,7 @@ class HomePage extends Component{
                         .then((data) => {
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr,
+                                user_docs: data,
                                 message: ''
                             });
                         });
@@ -136,7 +137,7 @@ class HomePage extends Component{
                         console.log(data);
                         this.setState({
                             ...this.state,
-                            user_docs: data.docArr
+                            user_docs: data
                         });
                     });
         });
@@ -146,7 +147,7 @@ class HomePage extends Component{
 
         console.log(doc);
 
-        if (doc.DocType === "folder") {
+        if (doc.type === "folder") {
 
             API_DeleteDoc.deleteFolder(doc)
                 .then((res) => {
@@ -155,14 +156,14 @@ class HomePage extends Component{
                             console.log(data);
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr
+                                user_docs: data
                             });
                         });
                 });
         }
 
 
-        else if (doc.DocType === "file") {
+        else if (doc.type === "file") {
             API_DeleteDoc.deleteFile(doc)
                 .then((res) => {
                     API_GetFiles.getDocs(this.st)
@@ -170,7 +171,7 @@ class HomePage extends Component{
                             console.log(data);
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr
+                                user_docs: data
                             });
                         });
                 });
@@ -245,7 +246,7 @@ class HomePage extends Component{
     };
 
     displayStar = (doc) => {
-        console.log("Value of star is "+ doc.Star+" doc : "+doc);
+        console.log("Value of star is "+ doc.star+" doc : "+doc);
         if(doc.Star === 0){
             return (<img src={unstrImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
         }
@@ -256,7 +257,7 @@ class HomePage extends Component{
 
     displayIcon = (doc) => {
 
-        if(doc.DocType === "folder") {
+        if(doc.type === "folder") {
 
             return (<img src={folder} height={'30px'} width={'30px'} alt={'Not available'}/>);
 
@@ -269,17 +270,18 @@ class HomePage extends Component{
     };
 
     displayDocument = (doc) => {
-        if(doc.DocType === "folder"){
+        if(doc.type === "folder"){
             return (
-                    <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.DocName} > {doc.DocName} </button>
+                    <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.name} > {doc.name} </button>
             );
         }
         else{
-            let filePath = 'http://localhost:3004/'+doc.DocPath+doc.DocName;
-            filePath = filePath.replace("/public","");
+            // let filePath = 'http://localhost:8080/'+doc.DocPath+doc.DocName;
+            // filePath = filePath.replace("/public","");
+            // href = {filePath}
             return(
-                        <a href={filePath}>
-                            {doc.DocName}
+                        <a>
+                            {doc.name}
                         </a>
             );
         }
@@ -296,7 +298,7 @@ class HomePage extends Component{
     displayDocPath = (doc) => {
         return(
             <div>
-                <p style={{verticalAlign: "center"}}>{doc.DocPath}</p>
+                <p style={{verticalAlign: "center"}}>{doc.path}</p>
             </div>
         );
     };

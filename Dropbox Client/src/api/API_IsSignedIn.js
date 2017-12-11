@@ -1,9 +1,9 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004';
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
 
 export const checkIsSignedIn = () =>
 
-    fetch(`${api}/IsSignedIn`, {
+    fetch(`${api}/user/isSignedIn`, {
         credentials: 'include'
     }).then( res => {
         return res.status;

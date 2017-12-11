@@ -1,6 +1,6 @@
 import React,{Component} from 'react';
 import { withRouter } from 'react-router-dom';
-import * as API_Activity from "../api/API_Activity";
+import * as API_Activity from "../api/API_GetActivity";
 import * as API_IsSignedIn from "../api/API_IsSignedIn";
 import dropbox_name from './dropbox_.jpg';
 import dropbox_logo from './dropbox_logo_.jpg';
@@ -20,25 +20,25 @@ class Activity extends Component{
 
         console.log("In IsSignedIn request of willMount");
 
-        API_IsSignedIn.checkIsSignedIn()
-            .then((status) => {
-
-                    if(status === 200){
-                        console.log("User is authorized to access this page");
-                    }
-                    else{
-                        this.props.history.push("/SignIn");
-                    }
-
-                }
-            );
+        // API_IsSignedIn.checkIsSignedIn()
+        //     .then((status) => {
+        //
+        //             if(status === 200){
+        //                 console.log("User is authorized to access this page");
+        //             }
+        //             else{
+        //                 this.props.history.push("/SignIn");
+        //             }
+        //
+        //         }
+        //     );
 
         API_Activity.getUserActivity()
             .then((data) => {
                 console.log(data);
                 this.setState({
                     ...this.state,
-                    user_activity: data.activityArr
+                    user_activity: data
                 });
             });
 
@@ -51,7 +51,7 @@ class Activity extends Component{
                 console.log(data);
                 this.setState({
                     ...this.state,
-                    user_activity: data.activityArr
+                    user_activity: data
                 });
         });
 
@@ -159,9 +159,9 @@ class Activity extends Component{
                                 <tbody>
                                 {this.state.user_activity && (this.state.user_activity.map(activity => (
                                     <tr>
-                                        <td>{activity.ActivityName}</td>
-                                        <td>{activity.DocName}</td>
-                                        <td>{activity.TimeStamp}</td>
+                                        <td>{activity.activityName}</td>
+                                        <td>{activity.docName}</td>
+                                        <td>{activity.timeStamp}</td>
                                     </tr>
                                 )))}
                                 </tbody>

@@ -12,8 +12,11 @@ public class DocumentService {
     @Autowired
     private DocumentRepository documentRepository;
 
+    public void addDocument(Document document){
+        documentRepository.save(document);
+    }
 
-    public List<Document> getFiles(String owner, String path){
+    public List<Document> getDocs(String owner, String path){
         return documentRepository.findByOwnerAndPath(owner,path);
     }
 }

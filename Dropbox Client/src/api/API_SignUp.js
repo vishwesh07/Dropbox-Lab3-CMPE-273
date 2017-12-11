@@ -1,5 +1,5 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004'
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080'
 
 const headers = {
     'Accept': 'application/json'
@@ -7,7 +7,7 @@ const headers = {
 
 export const doSignUp = (payload) =>
 
-    fetch(`${api}/SignUp`, {
+    fetch(`${api}/user/signUp`, {
         method: 'POST',
         headers: {
             ...headers,

@@ -62,14 +62,16 @@ class RoutingComponent extends Component {
 
     handleSignUp = (state) => {
 
-        if(state.userData.firstName === "" || state.userData.firstName === null ||state.userData.firstName === undefined){
-
-        }
+        // if(state.firstName === "" || state.firstName === null ||state.firstName === undefined){
+        //
+        // }
 
         console.log("In handle SignUp, isSignedIn ="+this.state.isSignedIn);
 
         API_SignUp.doSignUp(state)
             .then( (response) => {
+
+                console.log(response);
 
                 if(response.status === 201){
 
@@ -82,7 +84,7 @@ class RoutingComponent extends Component {
                         username: response.username
                     });
 
-                    console.log("In handle SignUp, status = "+ response.status+" isSignedIn = "+this.state.isSignedIn+" pushing to HomePage");
+                    console.log("In handle SignUp, status = "+ response.status+" isSignedIn = "+this.state.isSignedIn+" pushing to HomePage"+response.email+" "+response.username);
 
                     this.props.history.push("/HomePage");
                 }
@@ -131,15 +133,15 @@ class RoutingComponent extends Component {
 
                 console.log("In response of Sign In : "+response.status);
 
-                if(response.status === 201){
+                if(response.status === 200){
 
                     this.setState({
                         ...this.state,
                         isSignedIn: true,
                         signInMessage: undefined,
                         signUpMessage: undefined,
-                        email: response.username,
-                        username: response.firstname
+                        email: response.email,
+                        username: response.username
                     });
 
                     console.log("usernameSet : "+this.state.username+" "+response.username);
@@ -188,7 +190,7 @@ class RoutingComponent extends Component {
 
         API_SignOut.doSignOut()
             .then( (response) => {
-
+                console.log("In sign out - "+response.status);
                 if(response.status === 200){
 
                     this.setState({

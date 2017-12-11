@@ -1,12 +1,12 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004';
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
 
 const headers = {
     'Accept': 'application/json'
 };
 
 export const getProfile = (payload) =>
-    fetch(`${api}/profile/getProfile`,{
+    fetch(`${api}/user/getProfile`,{
         method: 'POST',
         headers: {
             ...headers,
