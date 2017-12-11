@@ -19,4 +19,8 @@ public class DocumentService {
     public List<Document> getDocs(String owner, String path){
         return documentRepository.findByOwnerAndPath(owner,path);
     }
+
+    public List<Document> getSharedDocs(String sharedWith){
+        return documentRepository.findBySharedWith(sharedWith);
+    }
 }

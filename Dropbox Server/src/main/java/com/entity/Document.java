@@ -19,18 +19,21 @@ public class Document {
 
     private String path;
 
+    private String sharedWith;
+
     private Boolean star = false;
 
     public Document(){
 
     }
 
-    public Document(String name,String type,String owner,String path,Boolean star){
+    public Document(String name,String type,String owner,String path,Boolean star,String sharedWith){
         this.name = name;
         this.type = type;
         this.owner = owner;
         this.path = path;
         this.star = star;
+        this.sharedWith = sharedWith;
     }
 
     public String getType() {
@@ -79,6 +82,14 @@ public class Document {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getSharedWith() {
+        return sharedWith;
+    }
+
+    public void setSharedWith(String sharedWith) {
+        this.sharedWith = sharedWith;
     }
 
 }

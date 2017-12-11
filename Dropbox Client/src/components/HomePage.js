@@ -26,11 +26,16 @@ class HomePage extends Component{
             userData: {
                 email: this.props.email,     // problem
                 username: '',
-                user_docs: []
+                user_docs: [{name: '',
+                    path: '',
+                    type: '',
+                    owner: '',
+                    shareWith: ''}]
             },
             message: '',
             foldername : '',
-            currentPath : './public/upload/'+ this.props.email +'/'
+            currentPath : './public/upload/'+ this.props.email +'/',
+            shareWith: ''
         };
     }
 
@@ -180,32 +185,15 @@ class HomePage extends Component{
 
     handleShare = (doc) => {
         let shareDoc = {
-            DocName: doc.DocName,
-            currentPath: doc.DocPath,
-            shareFrom: doc.DocOwner,
-            shareWith: this.state.shareWith
+            name: doc.name,
+            path: doc.path,
+            type: doc.type,
+            owner: doc.owner,
+            shareWith: 'xyz'
         };
         API_ShareDoc.shareDoc(shareDoc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then(() => {
-                        console.log();
-                    });
-            });
-    };
-
-    handleUnshare = (doc) => {
-        let unshareDoc = [];
-        API_UnShareDoc.unShareDoc(doc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then((data) => {
-                        console.log(data);
-                        this.setState({
-                            ...this.state,
-                            user_docs: data.docArr
-                        });
-                    });
+            .then((res) => {
+                console.log("Shared Docs");
             });
     };
 
@@ -247,7 +235,7 @@ class HomePage extends Component{
 
     displayStar = (doc) => {
         console.log("Value of star is "+ doc.star+" doc : "+doc);
-        if(doc.Star === 0){
+        if(doc.star === false){
             return (<img src={unstrImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
         }
         else{
@@ -318,7 +306,7 @@ class HomePage extends Component{
 
     displayShare = (doc) => {
 
-        return (<img src={shareDoc} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
+        return (<img src={shareDoc} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleShare(doc)}/>);
 
     };
 

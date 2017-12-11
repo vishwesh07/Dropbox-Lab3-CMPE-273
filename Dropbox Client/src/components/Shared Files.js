@@ -18,6 +18,7 @@ import file from '../components/file.png';
 import folder from '../components/folder.png';
 import deleteFile from '../components/delete.png';
 import shareDoc from "../components/share.png";
+import * as API_GetSharedFiles from "../api/API_GetSharedDocs";
 
 class SharedFiles extends Component{
 
@@ -40,114 +41,30 @@ class SharedFiles extends Component{
 
         console.log("In IsSignedIn request of willMount");
 
-        API_IsSignedIn.checkIsSignedIn()
-            .then((status) => {
-
-                    if(status === 200){
-                        console.log("User is authorized to access this page");
-                    }
-                    else{
-                        this.props.history.push("/SignIn");
-                    }
-
-                }
-            );
-    }
-
-    componentDidMount() {
-
-        let state = this.state;
-        console.log("In Did Mount "+state.currentPath+" email "+ this.props.email );
-
-        API_GetFiles.getDocs(state)
+        API_GetSharedFiles.getSharedDocs(this.state)
             .then((data) => {
                 console.log(data);
                 this.setState({
                     ...this.state,
-                    user_docs: data.docArr
+                    user_docs: data
                 });
             });
-    };
+    }
 
-    handleStarAction = (doc) => {
-        API_StarAction.starAction(doc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then((data) => {
-                        console.log(data);
-                        this.setState({
-                            ...this.state,
-                            user_docs: data.docArr
-                        });
-                    });
-            });
-    };
-
-    handleDelete = (doc) => {
-
-        console.log(doc);
-
-        if (doc.DocType === "folder") {
-
-            API_DeleteDoc.deleteFolder(doc)
-                .then((res) => {
-                    API_GetFiles.getDocs(this.st)
-                        .then((data) => {
-                            console.log(data);
-                            this.setState({
-                                ...this.state,
-                                user_docs: data.docArr
-                            });
-                        });
-                });
-        }
-
-
-        else if (doc.DocType === "file") {
-            API_DeleteDoc.deleteFile(doc)
-                .then((res) => {
-                    API_GetFiles.getDocs(this.st)
-                        .then((data) => {
-                            console.log(data);
-                            this.setState({
-                                ...this.state,
-                                user_docs: data.docArr
-                            });
-                        });
-                });
-        }
-    };
-
-    handleShare = (doc) => {
-        let shareDoc = {
-            DocName: doc.DocName,
-            currentPath: doc.DocPath,
-            shareFrom: doc.DocOwner,
-            shareWith: this.state.shareWith
-        };
-        API_ShareDoc.shareDoc(shareDoc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then(() => {
-                        console.log();
-                    });
-            });
-    };
-
-    handleUnshare = (doc) => {
-        let unshareDoc = [];
-        API_UnShareDoc.unShareDoc(doc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then((data) => {
-                        console.log(data);
-                        this.setState({
-                            ...this.state,
-                            user_docs: data.docArr
-                        });
-                    });
-            });
-    };
+    // componentDidMount() {
+    //
+    //     let state = this.state;
+    //     console.log("In Did Mount "+state.currentPath+" email "+ this.props.email );
+    //
+    //     API_GetSharedFiles.getSharedDocs(state)
+    //         .then((data) => {
+    //             console.log(data);
+    //             this.setState({
+    //                 ...this.state,
+    //                 user_docs: data
+    //             });
+    //         });
+    // };
 
     navigateFolder = (event) => {
         console.log("In navigateFolder");
@@ -210,28 +127,20 @@ class SharedFiles extends Component{
     };
 
     displayDocument = (doc) => {
-        if(doc.DocType === "folder"){
+        if(doc.type === "folder"){
             return (
-                <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.DocName} > {doc.DocName} </button>
+                <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.name} > {doc.name} </button>
             );
         }
         else{
-            let filePath = 'http://localhost:3004/'+doc.DocPath+doc.DocName;
-            filePath = filePath.replace("/public","");
+            // let filePath = 'http://localhost:3004/'+doc.DocPath+doc.DocName;
+            // filePath = filePath.replace("/public","");
             return(
-                <a href={filePath}>
-                    {doc.DocName}
+                <a>
+                    {doc.name}
                 </a>
             );
         }
-    };
-
-    displayUserName = () => {
-        return(
-            <div>
-                {this.props.username}
-            </div>
-        );
     };
 
     displayBackButtonLogic = () => {
@@ -338,42 +247,6 @@ class SharedFiles extends Component{
                         <h2 className="page-header">
 
                             Shared With Me
-
-                        </h2>
-
-                        <br/>
-
-                        <div className="table-responsive">
-
-                            {this.displayBackButtonLogic()}
-
-                            <br/>
-
-                            <table className="table table-striped">
-                                <thead>
-                                <tr>
-                                    <th style={{textAlign: 'center'}}>Favorite</th>
-                                    <th></th>
-                                    <th style={{textAlign: 'center'}}>DocName</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {this.state.user_docs && (this.state.user_docs.map(doc => (
-                                    <tr>
-                                        <td>{this.displayStar(doc)}</td>
-                                        <td>{this.displayIcon(doc)}</td>
-                                        <td>{this.displayDocument(doc)}</td>
-                                        <td>{this.displayDelete(doc)}</td>
-                                    </tr>
-                                )))}
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <h2 className="page-header">
-
-                            Shared By Me
 
                         </h2>
 

@@ -1,12 +1,12 @@
 
-const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:3004';
+const api = process.env.REACT_APP_CONTACTS_API_URL || 'http://localhost:8080';
 
 const headers = {
     'Accept': 'application/json'
 };
 
 export const getSharedDocs = (payload) =>
-    fetch(`${api}/share/getSharedDocs`,{
+    fetch(`${api}/user/getSharedDoc`,{
         method: 'POST',
         headers: {
             ...headers,

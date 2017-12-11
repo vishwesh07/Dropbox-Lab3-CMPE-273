@@ -28,7 +28,7 @@ class Groups extends Component{
             userData: {
                 email: this.props.email,     // problem
                 username: '',
-                user_docs: []
+                user_docs: [{id: 5,name:"GroupSharedFolder",owner:"abc",path:"\\src\\public\\upload\\abc\\",sharedWith:"N/A",star:false,type:"folder"},{id: 4,name:"lamborgini.png",owner:"xyz",path:"\\src\\public\\upload\\xyz\\",sharedWith:"N/A",star:false,type:"file"}]
             },
             message: '',
             foldername : '',
@@ -40,18 +40,18 @@ class Groups extends Component{
 
         console.log("In IsSignedIn request of willMount");
 
-        API_IsSignedIn.checkIsSignedIn()
-            .then((status) => {
-
-                    if(status === 200){
-                        console.log("User is authorized to access this page");
-                    }
-                    else{
-                        this.props.history.push("/SignIn");
-                    }
-
-                }
-            );
+        // API_IsSignedIn.checkIsSignedIn()
+        //     .then((status) => {
+        //
+        //             if(status === 200){
+        //                 console.log("User is authorized to access this page");
+        //             }
+        //             else{
+        //                 this.props.history.push("/SignIn");
+        //             }
+        //
+        //         }
+        //     );
     }
 
     componentDidMount() {
@@ -64,7 +64,7 @@ class Groups extends Component{
                 console.log(data);
                 this.setState({
                     ...this.state,
-                    user_docs: data.docArr
+                    user_docs: data
                 });
             });
     };
@@ -77,7 +77,7 @@ class Groups extends Component{
                         console.log(data);
                         this.setState({
                             ...this.state,
-                            user_docs: data.docArr
+                            user_docs: data
                         });
                     });
             });
@@ -87,7 +87,7 @@ class Groups extends Component{
 
         console.log(doc);
 
-        if (doc.DocType === "folder") {
+        if (doc.type === "folder") {
 
             API_DeleteDoc.deleteFolder(doc)
                 .then((res) => {
@@ -96,14 +96,14 @@ class Groups extends Component{
                             console.log(data);
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr
+                                user_docs: data
                             });
                         });
                 });
         }
 
 
-        else if (doc.DocType === "file") {
+        else if (doc.type === "file") {
             API_DeleteDoc.deleteFile(doc)
                 .then((res) => {
                     API_GetFiles.getDocs(this.st)
@@ -111,42 +111,11 @@ class Groups extends Component{
                             console.log(data);
                             this.setState({
                                 ...this.state,
-                                user_docs: data.docArr
+                                user_docs: data
                             });
                         });
                 });
         }
-    };
-
-    handleShare = (doc) => {
-        let shareDoc = {
-            DocName: doc.DocName,
-            currentPath: doc.DocPath,
-            shareFrom: doc.DocOwner,
-            shareWith: this.state.shareWith
-        };
-        API_ShareDoc.shareDoc(shareDoc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then(() => {
-                        console.log();
-                    });
-            });
-    };
-
-    handleUnshare = (doc) => {
-        let unshareDoc = [];
-        API_UnShareDoc.unShareDoc(doc)
-            .then(() => {
-                API_GetFiles.getDocs(this.st)
-                    .then((data) => {
-                        console.log(data);
-                        this.setState({
-                            ...this.state,
-                            user_docs: data.docArr
-                        });
-                    });
-            });
     };
 
     navigateFolder = (event) => {
@@ -186,8 +155,8 @@ class Groups extends Component{
     };
 
     displayStar = (doc) => {
-        console.log("Value of star is "+ doc.Star+" doc : "+doc);
-        if(doc.Star === 0){
+        console.log("Value of star is "+ doc.star+" doc : "+doc);
+        if(doc.star === false){
             return (<img src={unstrImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
         }
         else{
@@ -197,7 +166,7 @@ class Groups extends Component{
 
     displayIcon = (doc) => {
 
-        if(doc.DocType === "folder") {
+        if(doc.type === "folder") {
 
             return (<img src={folder} height={'30px'} width={'30px'} alt={'Not available'}/>);
 
@@ -210,28 +179,20 @@ class Groups extends Component{
     };
 
     displayDocument = (doc) => {
-        if(doc.DocType === "folder"){
+        if(doc.type === "folder"){
             return (
-                <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.DocName} > {doc.DocName} </button>
+                <button type="button" className="btn btn-link" onClick = {(event) => this.navigateFolder(event)} value={doc.name} > {doc.name} </button>
             );
         }
         else{
-            let filePath = 'http://localhost:3004/'+doc.DocPath+doc.DocName;
-            filePath = filePath.replace("/public","");
+            // let filePath = 'http://localhost:3004/'+doc.DocPath+doc.DocName;
+            // filePath = filePath.replace("/public","");
             return(
-                <a href={filePath}>
-                    {doc.DocName}
+                <a>
+                    {doc.name}
                 </a>
             );
         }
-    };
-
-    displayUserName = () => {
-        return(
-            <div>
-                {this.props.username}
-            </div>
-        );
     };
 
     displayBackButtonLogic = () => {

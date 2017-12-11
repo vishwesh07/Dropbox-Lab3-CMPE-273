@@ -11,5 +11,7 @@ public interface DocumentRepository extends CrudRepository<Document, Long> {
 
     List<Document> findByOwnerAndPath(String owner,String path);
 
+    List<Document> findBySharedWith(String sharedWith);
+
 }
 

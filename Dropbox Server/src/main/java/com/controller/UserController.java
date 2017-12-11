@@ -3,9 +3,11 @@ package com.controller;
 import com.entity.Activity;
 import com.entity.Document;
 import com.entity.User;
+
 import com.service.ActivityService;
 import com.service.DocumentService;
 import com.service.UserService;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,45 +42,6 @@ public class UserController {
 
     private String CurrentFolder = "";
 
-    @PostMapping(path="/add",consumes = MediaType.APPLICATION_JSON_VALUE) // Map ONLY POST Requests
-    public  ResponseEntity<?> addNewUser (@RequestBody User user) {
-        // @ResponseBody means the returned String is the response, not a view name
-        // @RequestParam means it is a parameter from the GET or POST request
-        userService.addUser(user);
-        System.out.println("Saved");
-        return new ResponseEntity(null,HttpStatus.CREATED);
-    }
-
-    @GetMapping(path="/all",produces = MediaType.APPLICATION_JSON_VALUE)
-    public @ResponseBody Iterable<User> getAllUsers() {
-        // This returns a JSON with the users
-        return userService.getAllUsers();
-    }
-
-    @PostMapping(path="/shareDoc",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> shareDocs(@RequestBody String data)
-    {
-        System.out.println("In ShareDocs -");
-        JSONObject jsonObject = new JSONObject(data);
-        jsonObject = jsonObject.getJSONObject("doc");
-        System.out.println("Data: "+data);
-        System.out.println("Document: "+jsonObject);
-        String name = jsonObject.getString("name");
-        String type = jsonObject.getString("type");
-        String owner = jsonObject.getString("shareWith");
-        String path = jsonObject.getString("path");
-        System.out.println("ShareWith: "+owner);
-        documentService.addDocument(new Document(name,type,owner,path,false));
-//      List<Document> l= documentService.getDocs(email,CurrentFolder);
-        Map m = new HashMap();
-        m.put("message"," !! Shared "+name+" with "+owner+" !! ");
-        m.put("status", 200);
-        System.out.println(m);
-        return new ResponseEntity(m,HttpStatus.OK);
-    }
-
-
-
     @PostMapping(path="/fileActions/uploadFile")
     public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, HttpSession session) {
         System.out.println("In file upload -");
@@ -97,7 +60,7 @@ public class UserController {
             Path path = Paths.get(Paths.get("").toAbsolutePath().toString()+CurrentFolder+"\\"+ file.getOriginalFilename());
             Files.write(path, bytes);
             activityService.addActivity(new Activity("Uploaded File",file.getOriginalFilename(),email));
-            documentService.addDocument(new Document(file.getOriginalFilename(),"file",email,CurrentFolder,false));
+            documentService.addDocument(new Document(file.getOriginalFilename(),"file",email,CurrentFolder,false,"N/A"));
             System.out.println("message - You successfully uploaded '" + file.getOriginalFilename() + "'");
 
         }
@@ -120,19 +83,6 @@ public class UserController {
         System.out.println("Folder - Name : "+folder);
 
 //        Check whether folder exists or not
-//        List<User> l= userService.checkUserExists(jsonObject.getString("email"));
-//        System.out.println("List "+ l);
-//        if(l.size() >= 1){
-//            System.out.println("!!User Already Exists!!");
-//            Map m = new HashMap();
-//            m.put("status", 403);
-//            System.out.println(m);
-//            return new ResponseEntity(m,HttpStatus.FORBIDDEN);
-//        }
-//        else{
-//            email = jsonObject.getString("email");
-//            session.setAttribute("name",jsonObject.getString("email"));
-//            System.out.println("User Added");
 
             try{
 
@@ -155,7 +105,7 @@ public class UserController {
                 e.printStackTrace();
             }
             activityService.addActivity(new Activity("Created File",folder,email));
-            documentService.addDocument(new Document(folder,"folder",email,CurrentFolder,false));
+            documentService.addDocument(new Document(folder,"folder",email,CurrentFolder,false,"N/A"));
             Map m = new HashMap();
             m.put("status", 201);
             System.out.println(m);
@@ -171,6 +121,47 @@ public class UserController {
         List<Document> l= documentService.getDocs(email,CurrentFolder);
         System.out.println("List "+ l);
         return new ResponseEntity(l,HttpStatus.OK);
+    }
+
+    @PostMapping(path="/shareDoc",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> shareDocs(@RequestBody String data)
+    {
+        System.out.println("In ShareDocs -");
+        JSONObject jsonObject = new JSONObject(data);
+        System.out.println("Document: "+jsonObject);
+        String name = jsonObject.getString("name");
+        String type = jsonObject.getString("type");
+        String shareWith = jsonObject.getString("shareWith");
+        String path = jsonObject.getString("path");
+        System.out.println("ShareWith: "+shareWith);
+        documentService.addDocument(new Document(name,type,email,path,false,shareWith));
+        activityService.addActivity(new Activity("Shared "+name+" with"+shareWith,name,email));
+//      List<Document> l= documentService.getDocs(email,CurrentFolder);
+        Map m = new HashMap();
+        m.put("message"," !! Shared "+name+" with "+shareWith+" !! ");
+        m.put("status", 200);
+        System.out.println(m);
+        return new ResponseEntity(m,HttpStatus.OK);
+    }
+
+    @PostMapping(path="/getSharedDoc",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> getShareDocs(@RequestBody String data)
+    {
+        System.out.println("In getShareDocs -");
+        System.out.println("Data: "+data);
+        List<Document> l= documentService.getSharedDocs(email);
+        System.out.println("List "+ l);
+        return new ResponseEntity(l,HttpStatus.OK);
+    }
+
+        @PostMapping(path="/createGroup",consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> createGroup(@RequestBody String data)
+    {
+        JSONObject jsonObject = new JSONObject(data);
+        Map m = new HashMap();
+        m.put("status", 200);
+        System.out.println(m);
+        return new ResponseEntity(m,HttpStatus.OK);
     }
 
     @PostMapping(path="/getActivity",consumes = MediaType.APPLICATION_JSON_VALUE)
