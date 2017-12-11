@@ -270,4 +270,13 @@ public class UserController {
         System.out.println(m);
         return new ResponseEntity(m,HttpStatus.OK);
     }
+
+    @PostMapping(path="/loadTest")
+    public ResponseEntity<?> loadTest()
+    {
+        System.out.println("In /user/loadTest for load testing");
+        List<Activity> a= activityService.getUserActivity("mike@gmail.com");
+        System.out.println("Activities - "+ a);
+        return new ResponseEntity(a,HttpStatus.OK);
+    }
 }

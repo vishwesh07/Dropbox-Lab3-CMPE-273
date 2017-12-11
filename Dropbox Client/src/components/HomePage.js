@@ -35,7 +35,8 @@ class HomePage extends Component{
             message: '',
             foldername : '',
             currentPath : './public/upload/'+ this.props.email +'/',
-            shareWith: ''
+            shareWith: '',
+            flag: true,
         };
     }
 
@@ -235,12 +236,21 @@ class HomePage extends Component{
 
     displayStar = (doc) => {
         console.log("Value of star is "+ doc.star+" doc : "+doc);
+        if(this.state.flag){
+            console.log("In flag")
+            this.setState({
+                ...this.state,
+                flag: false
+            });
+            return (<img src={strImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
+        }
         if(doc.star === false){
             return (<img src={unstrImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
         }
         else{
             return (<img src={strImg} height={'30px'} width={'30px'} alt={'Not available'} onClick={() => this.handleStarAction(doc)}/>);
         }
+
     };
 
     displayIcon = (doc) => {
