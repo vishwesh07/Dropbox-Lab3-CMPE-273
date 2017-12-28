@@ -57,99 +57,34 @@ public class DopboxTest {
         user.setWork("work");
         user.setOverview("ovrview");
         userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        String usreidDatabase = String.valueOf(user.getId());
+        String userid = "10";
+        assertEquals("User Creted",usreidDatabase,userid);
     }
 
     @Test
     public void signIn() {
-        User user = new User();
-        user.setPassword("password");
-        user.setLastName("last");
-        user.setFirstName("first");
-        user.setEmail("Email@email.com");
-        user.setContactInfo("21365475");
-        user.setLifeEvents("event");
-        user.setEducation("edu");
-        user.setWork("work");
-        user.setOverview("ovrview");
-        userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        // Test for signIn
     }
 
     @Test
     public void signOut() {
-        User user = new User();
-        user.setPassword("password");
-        user.setLastName("last");
-        user.setFirstName("first");
-        user.setEmail("Email@email.com");
-        user.setContactInfo("21365475");
-        user.setLifeEvents("event");
-        user.setEducation("edu");
-        user.setWork("work");
-        user.setOverview("ovrview");
-        userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        // Test for signOut
     }
 
     @Test
     public void getDocs() {
-        User user = new User();
-        user.setPassword("password");
-        user.setLastName("last");
-        user.setFirstName("first");
-        user.setEmail("Email@email.com");
-        user.setContactInfo("21365475");
-        user.setLifeEvents("event");
-        user.setEducation("edu");
-        user.setWork("work");
-        user.setOverview("ovrview");
-        userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        // Test for getDocs
     }
 
     @Test
     public void createFolder(){
-        User user = new User();
-        user.setPassword("password");
-        user.setLastName("last");
-        user.setFirstName("first");
-        user.setEmail("Email@email.com");
-        user.setContactInfo("21365475");
-        user.setLifeEvents("event");
-        user.setEducation("edu");
-        user.setWork("work");
-        user.setOverview("ovrview");
-        userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        // Test for createFolder
     }
 
     @Test
     public void shareDoc() {
-        User user = new User();
-        user.setPassword("password");
-        user.setLastName("last");
-        user.setFirstName("first");
-        user.setEmail("Email@email.com");
-        user.setContactInfo("21365475");
-        user.setLifeEvents("event");
-        user.setEducation("edu");
-        user.setWork("work");
-        user.setOverview("ovrview");
-        userService.addUser(user);
-        String usreid = String.valueOf(user.getId());
-        String userid = "6";
-        assertEquals("User Creted",Long.parseLong(userid),6);
+        // Test for shareDoc
     }
 
 }
